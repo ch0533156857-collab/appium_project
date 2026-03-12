@@ -1,6 +1,6 @@
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.example.ClockTimerPage;
+import org.example.ClockPage;
 import org.junit.jupiter.api.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-public class ClockTaskTest {
+public class ClockTest {
     static UiAutomator2Options deviceCapabilities; // שינוי שם מ-appOptions
-    AndroidDriver mobileDriver; // שינוי שם מ-appiumDriver
+    AndroidDriver mobileDriver;
 
     @BeforeAll
     public static void setupCapabilities() {
@@ -41,7 +41,7 @@ public class ClockTaskTest {
     @Test
     @DisplayName("בדיקת ספירה לאחור של טיימר - 31 שניות")
     public void verifyTimerCountdownLogic() {
-        ClockTimerPage timerScreen = new ClockTimerPage(mobileDriver);
+        ClockPage timerScreen = new ClockPage(mobileDriver);
 
         timerScreen.goToTimerTab();
         Assertions.assertTrue(timerScreen.isTimerInputReady(), "שגיאה: מסך הזנת הטיימר לא הופיע");

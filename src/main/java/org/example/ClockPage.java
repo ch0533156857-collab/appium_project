@@ -6,10 +6,9 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-public class ClockTimerPage {
+public class ClockPage {
     private final AndroidDriver mobileDriver; // שינוי שם מ-driver ל-mobileDriver
 
-    // שינוי שמות המשתנים (האלמנטים) לשמות ברורים יותר
     @AndroidFindBy(accessibility = "Timer")
     private WebElement timerNavigationButton;
 
@@ -28,7 +27,7 @@ public class ClockTimerPage {
     @AndroidFindBy(id = "com.google.android.deskclock:id/timer_text")
     private WebElement activeCountdownLabel;
 
-    public ClockTimerPage(AndroidDriver driver) {
+    public ClockPage(AndroidDriver driver) {
         this.mobileDriver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(mobileDriver), this);
     }
@@ -58,7 +57,6 @@ public class ClockTimerPage {
         return activeCountdownLabel.getText();
     }
 
-    // מתודה הכרחית עבור ה-WebDriverWait שהוספנו בטסט
     public WebElement getCountdownDisplayElement() {
         return activeCountdownLabel;
     }

@@ -7,7 +7,7 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
-public class AndroidSettingsPage {
+public class SettingsPage {
 
     private final AndroidDriver mobileDriver;
 
@@ -20,15 +20,14 @@ public class AndroidSettingsPage {
     @AndroidFindBy(xpath = "//android.widget.RelativeLayout[.//android.widget.TextView[@text='Keyboard']]")
     private WebElement keyboardSelectionLink;
 
-    public AndroidSettingsPage(AndroidDriver driver) {
+    public SettingsPage(AndroidDriver driver) {
         this.mobileDriver = driver;
         PageFactory.initElements(new AppiumFieldDecorator(mobileDriver), this);
     }
 
     public void scrollToSystemMenu() {
-        // שימוש במפתח החדש שנתנו ב-Enum: SYSTEM_CORE
         String scrollCommand = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                + "new UiSelector().text(\"" + DeviceCategory.SYSTEM_CORE.getLabel() + "\"));";
+                + "new UiSelector().text(\"" + DeviceType.SYSTEM_CORE.getLabel() + "\"));";
 
         WebElement systemEntry = mobileDriver.findElement(AppiumBy.androidUIAutomator(scrollCommand));
         systemEntry.click();

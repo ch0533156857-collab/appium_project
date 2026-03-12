@@ -1,6 +1,6 @@
 package org.example;
 
-public enum DeviceCategory {
+public enum DeviceType {
     NETWORK_OPTIONS("Network & internet"),
     BLUETOOTH_DEVICES("Connected devices"),
     APPLICATION_LIST("Apps"),
@@ -22,7 +22,7 @@ public enum DeviceCategory {
     TIPS_HELP("Tips & support");
 
     private final String label;
-    DeviceCategory(String label) {
+    DeviceType(String label) {
         this.label = label;
     }
 

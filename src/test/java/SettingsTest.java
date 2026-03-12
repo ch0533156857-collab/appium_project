@@ -1,14 +1,14 @@
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
-import org.example.AndroidSettingsPage;
-import org.junit.jupiter.api.*; // זה מייבא את כל הכלים של JUnit 5 (גרסה חדשה)
+import org.example.SettingsPage;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Assertions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
-public class SystemSettingsTest {
+public class SettingsTest {
     static UiAutomator2Options deviceOptions;
     AndroidDriver mobileDriver;
 
@@ -40,7 +40,7 @@ public class SystemSettingsTest {
 
     @Test
     public void verifySystemKeyboardNavigation() {
-        AndroidSettingsPage settingsPage = new AndroidSettingsPage(mobileDriver);
+        SettingsPage settingsPage = new SettingsPage(mobileDriver);
 
         settingsPage.scrollToSystemMenu();
         Assertions.assertTrue(settingsPage.isSystemMenuOpen(), "דף המערכת לא נטען כראוי");

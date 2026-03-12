@@ -9,39 +9,40 @@ import org.openqa.selenium.support.PageFactory;
 
 public class AndroidSettingsPage {
 
+    private final AndroidDriver mobileDriver;
+
     @AndroidFindBy(accessibility = "System")
-    private WebElement systemHeader;
+    private WebElement systemBreadcrumb;
 
     @AndroidFindBy(accessibility = "Keyboard")
     private WebElement keyboardHeader;
 
     @AndroidFindBy(xpath = "//android.widget.RelativeLayout[.//android.widget.TextView[@text='Keyboard']]")
-    private WebElement keyboardOptionBtn;
-
-    private final AndroidDriver appiumDriver;
+    private WebElement keyboardSelectionLink;
 
     public AndroidSettingsPage(AndroidDriver driver) {
-        this.appiumDriver = driver;
-        PageFactory.initElements(new AppiumFieldDecorator(appiumDriver), this);
+        this.mobileDriver = driver;
+        PageFactory.initElements(new AppiumFieldDecorator(mobileDriver), this);
     }
 
-    public void navigateToSystemSettings() {
+    public void scrollToSystemMenu() {
+        // שימוש במפתח החדש שנתנו ב-Enum: SYSTEM_CORE
         String scrollCommand = "new UiScrollable(new UiSelector().scrollable(true)).scrollIntoView("
-                + "new UiSelector().text(\"" + DeviceCategory.CORE_SYSTEM.getLabel() + "\"));";
+                + "new UiSelector().text(\"" + DeviceCategory.SYSTEM_CORE.getLabel() + "\"));";
 
-        WebElement systemElement = appiumDriver.findElement(AppiumBy.androidUIAutomator(scrollCommand));
-        systemElement.click();
+        WebElement systemEntry = mobileDriver.findElement(AppiumBy.androidUIAutomator(scrollCommand));
+        systemEntry.click();
     }
 
-    public boolean isSystemSectionDisplayed() {
-        return systemHeader.isDisplayed();
+    public boolean isSystemMenuOpen() {
+        return systemBreadcrumb.isDisplayed();
     }
 
-    public void selectKeyboardOption() {
-        keyboardOptionBtn.click();
+    public void openKeyboardSettings() {
+        keyboardSelectionLink.click();
     }
 
-    public boolean isKeyboardSettingsVisible() {
+    public boolean isKeyboardConfigDisplayed() {
         return keyboardHeader.isDisplayed();
     }
 }

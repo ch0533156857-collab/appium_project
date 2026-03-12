@@ -1,25 +1,25 @@
 package org.example;
 
 public enum DeviceCategory {
-    NET_CONNECTIVITY("Network & internet"),
-    LINKED_HARDWARE("Connected devices"),
-    APP_MANAGEMENT("Apps"),
-    PUSH_ALERTS("Notifications"),
-    POWER_STATUS("Battery"),
-    DISK_USAGE("Storage"),
-    AUDIO_CONTROL("Sound & vibration"),
-    SCREEN_SETTINGS("Display & touch"),
-    THEME_STYLE("Wallpaper & style"),
-    EASE_OF_USE("Accessibility"),
-    PRIVACY_LOCK("Security & privacy"),
-    GPS_DATA("Location"),
-    SOS_ALERTS("Safety & emergency"),
-    ACCOUNT_CREDENTIALS("Passwords, passkeys & accounts"),
-    USAGE_LIMITS("Digital Wellbeing & parental controls"),
-    GOOGLE_PREFS("Google"),
-    CORE_SYSTEM("System"),
-    EMULATOR_INFO("About emulated device"),
-    SUPPORT_DESK("Tips & support");
+    NETWORK_OPTIONS("Network & internet"),
+    BLUETOOTH_DEVICES("Connected devices"),
+    APPLICATION_LIST("Apps"),
+    NOTIFICATION_SETTINGS("Notifications"),
+    BATTERY_INFO("Battery"),
+    STORAGE_MANAGER("Storage"),
+    SOUND_VIBRATION("Sound & vibration"),
+    DISPLAY_TOUCH("Display & touch"),
+    WALLPAPER_THEME("Wallpaper & style"),
+    ACCESSIBILITY_TOOLS("Accessibility"),
+    SECURITY_PRIVACY("Security & privacy"),
+    LOCATION_SERVICES("Location"),
+    SAFETY_EMERGENCY("Safety & emergency"),
+    USER_ACCOUNTS("Passwords, passkeys & accounts"),
+    PARENTAL_CONTROLS("Digital Wellbeing & parental controls"),
+    GOOGLE_SERVICES("Google"),
+    SYSTEM_CORE("System"), // זה המפתח שמשמש אותנו בטסט של ה-Settings
+    DEVICE_DETAILS("About emulated device"),
+    TIPS_HELP("Tips & support");
 
     private final String label;
     DeviceCategory(String label) {

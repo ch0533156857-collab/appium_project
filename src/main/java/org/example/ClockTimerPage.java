@@ -7,55 +7,59 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
 public class ClockTimerPage {
-    private final AndroidDriver driver;
+    private final AndroidDriver mobileDriver; // שינוי שם מ-driver ל-mobileDriver
 
+    // שינוי שמות המשתנים (האלמנטים) לשמות ברורים יותר
     @AndroidFindBy(accessibility = "Timer")
-    private WebElement timerTabIcon;
+    private WebElement timerNavigationButton;
 
     @AndroidFindBy(id = "com.google.android.deskclock:id/timer_setup_digit_3")
-    private WebElement digitThreeKey;
+    private WebElement buttonDigitThree;
 
     @AndroidFindBy(id = "com.google.android.deskclock:id/timer_setup_digit_1")
-    private WebElement digitOneKey;
+    private WebElement buttonDigitOne;
 
     @AndroidFindBy(id = "com.google.android.deskclock:id/timer_setup_time")
-    private WebElement timerInputDisplay;
+    private WebElement timeSettingLabel;
 
     @AndroidFindBy(accessibility = "Start")
-    private WebElement startTimerBtn;
+    private WebElement startProcessBtn;
 
     @AndroidFindBy(id = "com.google.android.deskclock:id/timer_text")
-    private WebElement countdownDisplay;
+    private WebElement activeCountdownLabel;
 
     public ClockTimerPage(AndroidDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(new AppiumFieldDecorator(driver), this);
+        this.mobileDriver = driver;
+        PageFactory.initElements(new AppiumFieldDecorator(mobileDriver), this);
     }
 
-
-    public void openTimerSection() {
-        timerTabIcon.click();
+    public void goToTimerTab() {
+        timerNavigationButton.click();
     }
 
-    public boolean isSetupScreenVisible() {
-        return digitOneKey.isDisplayed();
+    public boolean isTimerInputReady() {
+        return buttonDigitOne.isDisplayed();
     }
 
-
-    public void inputTimerDuration() {
-        digitThreeKey.click();
-        digitOneKey.click();
+    public void setTimerDuration() {
+        buttonDigitThree.click();
+        buttonDigitOne.click();
     }
 
-    public String getEnteredTimeValue() {
-        return timerInputDisplay.getText();
+    public String getCurrentInputValue() {
+        return timeSettingLabel.getText();
     }
 
-    public void beginCountdown() {
-        startTimerBtn.click();
+    public void clickStart() {
+        startProcessBtn.click();
     }
 
-    public String getRemainingTimeText() {
-        return countdownDisplay.getText();
+    public String getRunningTimerValue() {
+        return activeCountdownLabel.getText();
+    }
+
+    // מתודה הכרחית עבור ה-WebDriverWait שהוספנו בטסט
+    public WebElement getCountdownDisplayElement() {
+        return activeCountdownLabel;
     }
 }

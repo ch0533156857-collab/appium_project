@@ -1,52 +1,51 @@
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import org.example.AndroidSettingsPage;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.*; // זה מייבא את כל הכלים של JUnit 5 (גרסה חדשה)
+import org.junit.jupiter.api.Assertions;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
 public class SystemSettingsTest {
-    static UiAutomator2Options configOptions;
-    AndroidDriver appiumDriver;
+    static UiAutomator2Options deviceOptions;
+    AndroidDriver mobileDriver;
 
     @BeforeAll
-    public static void defineCapability() {
-        configOptions = new UiAutomator2Options();
-        configOptions.setDeviceName("emulator-5554");
-        configOptions.setAutomationName("UiAutomator2");
-        configOptions.setPlatformName("Android");
-        configOptions.setPlatformVersion("15");
-        configOptions.setAppPackage("com.android.settings");
-        configOptions.setAppActivity("com.android.settings.Settings");
-        configOptions.setNoReset(false);
-        configOptions.setNewCommandTimeout(Duration.ofSeconds(150));
+    public static void setupCapabilities() {
+        deviceOptions = new UiAutomator2Options();
+        deviceOptions.setDeviceName("emulator-5554");
+        deviceOptions.setAutomationName("UiAutomator2");
+        deviceOptions.setPlatformName("Android");
+        deviceOptions.setPlatformVersion("15");
+        deviceOptions.setAppPackage("com.android.settings");
+        deviceOptions.setAppActivity("com.android.settings.Settings");
+        deviceOptions.setNoReset(false);
+        deviceOptions.setNewCommandTimeout(Duration.ofSeconds(150));
     }
 
     @BeforeEach
-    public void loadDriver() throws MalformedURLException {
-        // וודאי שהכתובת תואמת לשרת שלך
-        appiumDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), configOptions);
+    public void init() throws MalformedURLException {
+        // התחברות לשרת Appium
+        mobileDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), deviceOptions);
     }
 
     @AfterEach
-    public void closeDriver() {
-        if (appiumDriver != null) {
-            appiumDriver.quit();
+    public void quit() {
+        if (mobileDriver != null) {
+            mobileDriver.quit();
         }
     }
 
     @Test
-    public void testSystemNavigation() {
-        AndroidSettingsPage settingsActions = new AndroidSettingsPage(appiumDriver);
+    public void verifySystemKeyboardNavigation() {
+        AndroidSettingsPage settingsPage = new AndroidSettingsPage(mobileDriver);
 
-        settingsActions.navigateToSystemSettings();
+        settingsPage.scrollToSystemMenu();
+        Assertions.assertTrue(settingsPage.isSystemMenuOpen(), "דף המערכת לא נטען כראוי");
 
-        org.junit.jupiter.api.Assertions.assertTrue(settingsActions.isSystemSectionDisplayed(), "System configuration page failed to load");
-
-        settingsActions.selectKeyboardOption();
-
-        org.junit.jupiter.api.Assertions.assertTrue(settingsActions.isKeyboardSettingsVisible(), "Keyboard settings screen was not displayed");
+        settingsPage.openKeyboardSettings(); 
+        Assertions.assertTrue(settingsPage.isKeyboardConfigDisplayed(), "הגדרות המקלדת לא הוצגו");
     }
 }

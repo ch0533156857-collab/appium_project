@@ -6,53 +6,54 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class ClockTaskTest {
-    static UiAutomator2Options appOptions;
-    AndroidDriver appiumDriver;
+    static UiAutomator2Options deviceCapabilities; // שינוי שם מ-appOptions
+    AndroidDriver mobileDriver; // שינוי שם מ-appiumDriver
 
     @BeforeAll
-    public static void defineCapability() {
-        appOptions = new UiAutomator2Options();
-        appOptions.setDeviceName("emulator-5554");
-        appOptions.setAutomationName("UiAutomator2");
-        appOptions.setPlatformName("Android");
-        appOptions.setPlatformVersion("15");
-        appOptions.setAppPackage("com.google.android.deskclock");
-        appOptions.setAppActivity("com.android.deskclock.DeskClock");
-        appOptions.setNoReset(false);
-        appOptions.setNewCommandTimeout(Duration.ofSeconds(150));
+    public static void setupCapabilities() {
+        deviceCapabilities = new UiAutomator2Options();
+        deviceCapabilities.setDeviceName("emulator-5554");
+        deviceCapabilities.setAutomationName("UiAutomator2");
+        deviceCapabilities.setPlatformName("Android");
+        deviceCapabilities.setPlatformVersion("15");
+        deviceCapabilities.setAppPackage("com.google.android.deskclock");
+        deviceCapabilities.setAppActivity("com.android.deskclock.DeskClock");
+        deviceCapabilities.setNoReset(false);
+        deviceCapabilities.setNewCommandTimeout(Duration.ofSeconds(150));
     }
 
     @BeforeEach
-    public void loadDriver() throws MalformedURLException {
-        appiumDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), appOptions);
+    public void initializeDriver() throws MalformedURLException {
+        mobileDriver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), deviceCapabilities);
     }
 
     @AfterEach
-    public void closeDriver() {
-        if (appiumDriver != null) {
-            appiumDriver.quit();
+    public void tearDown() {
+        if (mobileDriver != null) {
+            mobileDriver.quit();
         }
     }
 
     @Test
-    public void test() throws InterruptedException {
-        ClockTimerPage timerPage = new ClockTimerPage(appiumDriver);
+    @DisplayName("בדיקת ספירה לאחור של טיימר - 31 שניות")
+    public void verifyTimerCountdownLogic() {
+        ClockTimerPage timerScreen = new ClockTimerPage(mobileDriver);
 
-        timerPage.openTimerSection();
+        timerScreen.goToTimerTab();
+        Assertions.assertTrue(timerScreen.isTimerInputReady(), "שגיאה: מסך הזנת הטיימר לא הופיע");
 
-        Assertions.assertTrue(timerPage.isSetupScreenVisible(), "Timer page did not load!");
+        timerScreen.setTimerDuration();
+        Assertions.assertEquals("00h 00m 31s", timerScreen.getCurrentInputValue(), "שגיאה: הזמן שהוזן אינו תקין");
 
-        timerPage.inputTimerDuration();
+        timerScreen.clickStart();
 
-        Assertions.assertEquals("00h 00m 31s", timerPage.getEnteredTimeValue());
+        WebDriverWait wait = new WebDriverWait(mobileDriver, Duration.ofSeconds(35));
+        wait.until(ExpectedConditions.textToBePresentInElement(timerScreen.getCountdownDisplayElement(), "1"));
 
-        timerPage.beginCountdown();
-
-        Thread.sleep(30000);
-
-        Assertions.assertTrue(timerPage.getRemainingTimeText().contains("1"));
+        Assertions.assertTrue(timerScreen.getRunningTimerValue().contains("1"), "שגיאה: הטיימר לא הציג את הזמן המצופה לאחר ההמתנה");
     }
 }
